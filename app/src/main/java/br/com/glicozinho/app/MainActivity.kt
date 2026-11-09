@@ -205,6 +205,12 @@ class MainActivity : Activity() {
         fun cancelReminder(id: String): Boolean = ReminderScheduler.cancel(this@MainActivity, id)
 
         @JavascriptInterface
+        fun cancelAllReminders(): Boolean = runCatching {
+            ReminderScheduler.cancelAll(this@MainActivity)
+            true
+        }.getOrDefault(false)
+
+        @JavascriptInterface
         fun isReminderScheduled(id: String): Boolean = ReminderScheduler.isScheduled(this@MainActivity, id)
 
         @JavascriptInterface

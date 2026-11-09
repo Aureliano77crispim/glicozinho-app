@@ -32,6 +32,10 @@ for path in required:
 if not errors:
     # JavaScript syntax
     html = HTML.read_text(encoding="utf-8")
+    if "Versão beta 1.0.9" not in html:
+        errors.append("Rodapé HTML deve exibir a mesma versão beta 1.0.9 do aplicativo.")
+    if "Você tem um compromisso futuro na sua agenda." not in html or "speechSynthesis.speak(u)" not in html:
+        errors.append("Botão Ouvir deve oferecer leitura em voz alta da saudação e do próximo compromisso.")
     scripts = re.findall(r"<script[^>]*>(.*?)</script>", html, flags=re.I | re.S)
     if not scripts:
         errors.append("Nenhum bloco JavaScript foi encontrado no HTML.")
@@ -123,8 +127,8 @@ if not errors:
         (r"compileSdk\s*=\s*36\b", "compileSdk precisa ser 36"),
         (r"targetSdk\s*=\s*36\b", "targetSdk precisa ser 36"),
         (r"minSdk\s*=\s*26\b", "minSdk precisa ser 26"),
-        (r"versionCode\s*=\s*8\b", "versionCode precisa ser 8"),
-        (r'versionName\s*=\s*"1\.0\.7"', "versionName precisa ser 1.0.7"),
+        (r"versionCode\s*=\s*10\b", "versionCode precisa ser 10"),
+        (r'versionName\s*=\s*"1\.0\.9"', "versionName precisa ser 1.0.9"),
     ]:
         if not re.search(pattern, gradle):
             errors.append(message)
@@ -146,7 +150,7 @@ if not errors:
     if android_end < 0:
         errors.append("O bloco kotlin deve ficar fora e depois do bloco android.")
     if not errors:
-        checks.append("Configuração Android Release/API 36 e versão 1.0.7 conferidas")
+        checks.append("Configuração Android Release/API 36 e versão 1.0.9 conferidas")
 
     main_kt = MAIN_KT.read_text(encoding="utf-8")
     scheduler = SCHEDULER_KT.read_text(encoding="utf-8")
@@ -162,8 +166,22 @@ if not errors:
     ]:
         if needle not in main_kt:
             errors.append(message)
+    for needle, message in [
+        ("nextRoutineReminderInstant", "Restauração precisa recalcular lembretes de rotina"),
+        ("syncRoutineReminders()", "Restauração precisa reconstruir lembretes de rotina"),
+        ("cancelAllReminders", "Restauração precisa remover alarmes antigos que não pertencem ao backup"),
+        ("hideCnsNumber", "O número CNS deve ser ocultado automaticamente"),
+    ]:
+        if needle not in html:
+            errors.append(message)
     if "setAndAllowWhileIdle" not in scheduler or "setExactAndAllowWhileIdle" not in scheduler or "rescheduleAll" not in scheduler or "BOOT_COMPLETED" not in receiver:
         errors.append("Agendamento flexível/pontual ou reagendamento de inicialização incompleto.")
+    if "MY_PACKAGE_REPLACED" not in receiver or "android.intent.action.MY_PACKAGE_REPLACED" not in manifest_text:
+        errors.append("Lembretes precisam ser reconstruídos após atualização do aplicativo.")
+    if "fun cancelAllReminders()" not in main_kt:
+        errors.append("Bridge nativa precisa permitir limpar alarmes antigos durante restauração do backup.")
+    if "Autorize notificações" not in html or "pending_notification_permission" not in html:
+        errors.append("A interface precisa sinalizar quando a permissão de notificações foi revogada.")
     if "canScheduleExactAlarms" not in scheduler or "ACTION_REQUEST_SCHEDULE_EXACT_ALARM" not in main_kt:
         errors.append("A autorização especial de alarmes pontuais precisa ser verificada e solicitada corretamente.")
     if "appointments" not in main_kt or "validAppointments" not in main_kt or "LocalDateTime.parse" not in main_kt or "reminderNumber.toDouble()" not in main_kt or "appointments" not in html or "scheduleAppointmentReminder" not in main_kt or "areNotificationsEnabled" not in main_kt:

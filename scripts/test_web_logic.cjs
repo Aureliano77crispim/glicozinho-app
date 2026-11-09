@@ -28,6 +28,16 @@ const calendarSource = calendarFunctionNames.map(name => {
   return m[0];
 }).join('\n');
 const calendarApi = new Function(`${calendarSource}; return {localDayKey, parseLocalDateTime, appointmentReminderInstant, calendarCells, appointmentDateKey};`)();
+const nextRoutineMatch = source.match(/function nextRoutineReminderInstant[\s\S]*?return due\.toISOString\(\)\}/);
+if (!nextRoutineMatch) throw new Error('nextRoutineReminderInstant function not found');
+const nextRoutineReminderInstant = new Function(`${nextRoutineMatch[0]}; return nextRoutineReminderInstant;`)();
+const beforeReminder = new Date(2026, 10, 9, 20, 0, 0);
+const sameDayReminder = new Date(nextRoutineReminderInstant('21:30', beforeReminder));
+assert(sameDayReminder.getDate() === 9 && sameDayReminder.getHours() === 21 && sameDayReminder.getMinutes() === 30, 'Routine reminder did not stay on the same day when its time is upcoming');
+const afterReminder = new Date(2026, 10, 9, 22, 0, 0);
+const nextDayReminder = new Date(nextRoutineReminderInstant('21:30', afterReminder));
+assert(nextDayReminder.getDate() === 10 && nextDayReminder.getHours() === 21 && nextDayReminder.getMinutes() === 30, 'Daily routine reminder did not roll over to the next day');
+assert(nextRoutineReminderInstant('25:70', beforeReminder) === '', 'Invalid routine reminder time accepted');
 const parsedLocal = calendarApi.parseLocalDateTime('2026-11-07T10:45');
 const reminderIso = calendarApi.appointmentReminderInstant('2026-11-07T10:45', 30);
 assert(Number.isFinite(Date.parse(reminderIso)), 'Appointment reminder instant could not be derived');
@@ -104,4 +114,4 @@ assert(tx.getRenderCount() === 1, 'Failed persistence did not refresh after roll
 tx = makeTransaction({ items: ['before'] }, true);
 assert(tx.commitData(() => tx.getDb().items.push('saved')) === true, 'Successful persistence reported as failed');
 assert(JSON.stringify(tx.getDb()) === JSON.stringify({ items: ['before', 'saved'] }), 'Successful persistence did not keep mutation');
-console.log('WEB LOGIC TESTS PASSED: backup validation, insulin state, dose limits, future records, profile, recurrence, appointment schema, strict dates, duplicate-ID rejection, safe data normalization, timezone-aware reminder calculation, local date parsing, six-week calendar grid, collection limits and rollback-on-save-failure.');
+console.log('WEB LOGIC TESTS PASSED: backup validation, insulin state, dose limits, future records, profile, recurrence, appointment schema, strict dates, duplicate-ID rejection, safe data normalization, timezone-aware reminder calculation, local date parsing, six-week calendar grid, daily reminder restore time, collection limits and rollback-on-save-failure.');

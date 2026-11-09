@@ -1,10 +1,19 @@
-# Glicozinho Android — versão técnica 1.0.7 (projeto v1.5.2)
+# Glicozinho Android — versão técnica 1.0.9 (projeto v1.5.2)
 
-**Pacote único para GitHub:** este ZIP já contém os arquivos na raiz do repositório, inclusive `.github/workflows/android-apk.yml`. Leia `LEIA_ANTES_DE_ENVIAR_GITHUB.txt` antes do upload e `AUDITORIA_3_PASSAGENS_v1.5.2.md` para os resultados e limites da revisão.
+**Pacote único para GitHub:** este ZIP já contém os arquivos na raiz do repositório, inclusive `.github/workflows/android-apk.yml`. Leia `LEIA_ANTES_DE_ENVIAR_GITHUB.txt` antes do upload e `REVISAO_3_PASSAGENS_v1.0.9.md` para os resultados e limites da revisão.
 
 **Glicozinho — Seu companheiro de saúde.** Aplicativo Android beta de organização pessoal, com interface HTML local em WebView e camada nativa Kotlin. Não é dispositivo médico, prontuário clínico validado nem produto liberado para comercialização.
 
-## Novidade desta versão: calendário e agenda
+## Novidades e proteções desta versão
+
+- Após restaurar um backup, a fila de alarmes anterior é limpa e os lembretes de rotina e compromissos futuros daquele backup são reconstruídos no Android quando as permissões estão ativas.
+- O número CNS volta a ficar oculto ao sair da tela inicial, ao ocultar o aplicativo ou após 15 segundos.
+- A leitura por voz não pronuncia títulos de consultas, exames ou clínicas.
+- Lembretes avulsos vencidos podem ser removidos do histórico.
+- Se a permissão de notificações for revogada, a tela sinaliza que é necessário autorizá-la novamente, suspende alarmes pendentes e os recompõe quando a permissão volta.
+- Lembretes nativos também são reconstruídos após atualização do aplicativo.
+
+## Calendário e agenda
 
 - A tela inicial mostra a data e a hora atuais do próprio aparelho, respeitando idioma, fuso e horário configurados no Android. O relógio visual é atualizado a cada 30 segundos e quando o app retorna ao primeiro plano.
 - Calendário mensal navegável com botão para voltar ao dia atual, seleção de datas e marcação visual de dias com compromissos.
@@ -46,7 +55,7 @@
 
 - Android Gradle Plugin 8.13.2
 - Kotlin Gradle Plugin 2.4.21
-- Gradle 8.13
+- Gradle 8.14.4
 - JDK 17
 - Android SDK Platform 36 e Build Tools 36.0.0
 - `compileSdk 36`, `buildToolsVersion 36.0.0`, `targetSdk 36`, `minSdk 26`
@@ -55,7 +64,7 @@ Consulte a [matriz de compatibilidade do Kotlin Gradle](https://kotlinlang.org/d
 
 ## Compilar APK Debug para teste
 
-O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.0.7`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
+O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.0.9`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
 
 ## Compilar APK/AAB Release assinado
 
@@ -67,15 +76,15 @@ O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project
    - `ANDROID_KEY_ALIAS`
    - `ANDROID_KEY_PASSWORD`
 4. Abra **Actions → Glicozinho - Release assinado → Run workflow**.
-5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.0.7`.
+5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.0.9`.
 
 A assinatura deste projeto é uma chave privada de upload. Guarde uma cópia segura. Perder a chave pode impedir atualizações diretas com a mesma identidade. Uma assinatura própria não garante remoção dos avisos do Play Protect nem aprovação da Play Store.
 
 ## Revisão e testes desta versão
 
-O relatório `REVISAO_TECNICA_v1.5.md` descreve as três passagens de revisão, os testes executados e os limites ainda pendentes. Os workflows executam a validação antes de compilar.
+O relatório `REVISAO_3_PASSAGENS_v1.0.9.md` descreve as três passagens de revisão, as 53 verificações de interface, os testes de lógica, as correções e os limites ainda pendentes. Os workflows executam a validação antes de compilar.
 
-**Limite desta entrega:** foram executados testes de lógica JavaScript, verificação de sintaxe JavaScript, análise estrutural de HTML, parsing dos XMLs e validação de configuração do projeto. Este ambiente não tem Gradle/Android SDK instalados; portanto, não foi possível executar uma compilação Gradle real nem testar a instalação, a permissão de notificações, o comportamento com tela bloqueada ou a pontualidade em aparelhos físicos. A primeira compilação real deve ser confirmada no GitHub Actions. Os alarmes precisam ser testados em aparelhos e fabricantes diferentes.
+**Limite desta entrega:** foram executados 50 testes automatizados de interface móvel em Chromium (com bridge Android simulado), testes de lógica JavaScript, verificação de sintaxe, análise estrutural de HTML, parsing dos XMLs e validação de configuração do projeto. Este ambiente não tem Gradle/Android SDK instalados; portanto, não foi possível executar uma compilação Gradle real nem testar a instalação, a permissão de notificações, o comportamento com tela bloqueada ou a pontualidade em aparelhos físicos. A primeira compilação real deve ser confirmada no GitHub Actions. Os alarmes precisam ser testados em aparelhos e fabricantes diferentes.
 
 ## Antes de uso real ou comercial
 

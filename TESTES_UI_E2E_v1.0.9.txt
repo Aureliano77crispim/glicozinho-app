@@ -1,0 +1,54 @@
+Inicialização sem erro JS | PASS | []
+5 abas inferiores | PASS | 
+6 telas incluindo Perfil | PASS | 
+Navegação health | PASS | 
+Navegação meds | PASS | 
+Navegação routine | PASS | 
+Navegação progress | PASS | 
+Abertura Perfil | PASS | 
+Cadastro glicemia | PASS | 
+Contador glicemia na Home | PASS | 
+Cadastro aplicação insulina | PASS | 
+Contador de aplicações | PASS | 
+Unidades desabilitadas para não aplicada | PASS | 
+Registro não aplicado aparece como tal | PASS | 
+Contador não soma insulina não aplicada | PASS | 
+Cadastro de medicamento | PASS | 
+Registro de tomada | PASS | 
+Desfazer tomada | PASS | 
+Registro de refeição | PASS | 
+Criar lembrete nativo simulado | PASS | 
+Cancelar lembrete | PASS | 
+Lembrete cancelado removido da lista | PASS | 
+Salvar compromisso futuro | PASS | 
+Compromisso agenda alarme | PASS | 
+Concluir compromisso | PASS | 
+Reabrir compromisso | PASS | 
+Exclusão exige segundo toque | PASS | 
+Excluir compromisso | PASS | 
+Lembrete vencido mostra ação Remover | PASS | 
+Lembrete vencido removido do histórico | PASS | 
+Salvar Perfil | PASS | 
+Modo fácil | PASS | 
+Alto contraste | PASS | 
+CNS mascarado por padrão | PASS | 
+CNS mostra após toque | PASS | 
+CNS oculta automaticamente após o tempo de segurança | PASS | 
+CNS volta a ficar mascarado ao sair de Início | PASS | 
+Progresso glicemias | PASS | 
+Progresso aplicações reais | PASS | 
+Progresso medicamentos | PASS | 
+Exclusão completa e retorno Home | PASS | 
+Senha errada não altera registros existentes | PASS | 
+Restauração de backup de teste | PASS | 
+Lembrete diário reconstruído após restauração | PASS | 
+Alarme de compromisso reconstruído após restauração | PASS | 
+Alarmes antigos substituídos na restauração | PASS | 
+Permissão revogada sinalizada no lembrete restaurado | PASS | 
+Lembrete suspenso enquanto notificações estão bloqueadas | PASS | 
+Alarme de consulta suspenso enquanto notificações estão bloqueadas | PASS | 
+Lembrete volta ao estado agendado após permissão | PASS | 
+Compromisso também volta a ser agendado após permissão | PASS | 
+Leitura por voz não revela título da consulta | PASS | 
+Sem erros JavaScript durante fluxos de todas as telas | PASS | []
+UI_E2E_TESTS_PASSED: 53 checks
