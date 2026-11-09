@@ -1,4 +1,6 @@
-# Glicozinho Android — versão técnica 1.0.5 (projeto v1.5)
+# Glicozinho Android — versão técnica 1.0.5 (projeto v1.5.2)
+
+**Pacote único para GitHub:** este ZIP já contém os arquivos na raiz do repositório, inclusive `.github/workflows/android-apk.yml`. Leia `LEIA_ANTES_DE_ENVIAR_GITHUB.txt` antes do upload e `AUDITORIA_3_PASSAGENS_v1.5.2.md` para os resultados e limites da revisão.
 
 **Glicozinho — Seu companheiro de saúde.** Aplicativo Android beta de organização pessoal, com interface HTML local em WebView e camada nativa Kotlin. Não é dispositivo médico, prontuário clínico validado nem produto liberado para comercialização.
 

@@ -1,0 +1,34 @@
+GLICOZINHO — PACOTE ÚNICO PARA GITHUB — v1.5.2
+
+IMPORTANTE: este ZIP já abre na raiz do repositório. Não existe uma pasta extra "GlicozinhoAndroid" por fora.
+
+O QUE PRECISA APARECER NO GITHUB DEPOIS DO UPLOAD:
+  .github/workflows/android-apk.yml
+  .github/workflows/android-release.yml
+  app/build.gradle.kts
+  app/src/main/AndroidManifest.xml
+  app/src/main/assets/index.html
+  build.gradle.kts
+  settings.gradle.kts
+  gradle.properties
+  scripts/validate_project.py
+  scripts/test_web_logic.cjs
+
+POR QUE A VERSÃO ANTERIOR FALHOU:
+- O GitHub Actions continuou usando o workflow antigo, que chamava Gradle 8.13.
+- O log mostrou que app/build.gradle.kts ainda continha kotlinOptions { jvmTarget = "17" }, DSL antiga que o Kotlin 2.4.21 trata como erro.
+- O arquivo novo usa kotlin { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } } fora do bloco android.
+- Na página de upload anterior não apareceu o caminho .github/workflows/android-apk.yml; por isso, o workflow novo não substituiu o antigo.
+- Uma cópia anterior do ZIP pronto para GitHub também estava incompleta e não continha android-release.yml. Esta cópia única inclui os dois workflows e o validador atualizado.
+
+COMO CONFERIR ANTES DE CONFIRMAR O UPLOAD:
+1. Extraia este ZIP.
+2. Na pasta extraída, selecione e envie TODO o conteúdo, incluindo as pastas .github, app e scripts.
+3. Na prévia do GitHub, confirme que aparecem .github/workflows/android-apk.yml e app/build.gradle.kts.
+4. Se .github/workflows/android-apk.yml NÃO aparecer na prévia, cancele o upload. Não confirme um envio incompleto.
+5. Não envie nenhum arquivo do kit privado de assinatura (.p12, senhas ou Base64 da chave) ao repositório público.
+
+O workflow android-apk.yml é o que gera o APK DEBUG de teste automaticamente ao enviar para a branch main.
+O workflow android-release.yml é separado, manual, e só funciona depois de cadastrar os quatro segredos privados descritos no README. Não execute Release agora.
+
+Este pacote não contém APK compilado. O APK só existe depois que a execução GitHub Actions terminar em verde e produzir o artefato.

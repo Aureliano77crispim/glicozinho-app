@@ -134,7 +134,17 @@ if not errors:
     if 'com.android.application\") version \"8.13.2\"' not in root_build:
         errors.append("Versão AGP esperada (8.13.2) não encontrada.")
     if 'org.jetbrains.kotlin.android\") version \"2.4.21\"' not in root_build:
-        errors.append("Kotlin Gradle Plugin 2.4.21 é necessário para compatibilidade com Gradle 8.13/AGP 8.13.")
+        errors.append("Kotlin Gradle Plugin 2.4.21 não foi encontrado no build raiz.")
+    # Detect the exact issue shown in the user's GitHub Actions log: legacy kotlinOptions/jvmTarget String.
+    if "kotlinOptions" in gradle or re.search(r'jvmTarget\s*=\s*[\"\']17[\"\']', gradle):
+        errors.append("DSL Kotlin antiga encontrada: remova kotlinOptions/jvmTarget String e use compilerOptions com JvmTarget.JVM_17.")
+    if gradle.count("compileOptions {") != 1:
+        errors.append("app/build.gradle.kts deve conter exatamente um bloco compileOptions.")
+    if "compilerOptions" not in gradle or "JvmTarget.JVM_17" not in gradle:
+        errors.append("Configuração tipada compilerOptions/JVM_17 ausente.")
+    android_end = gradle.find("\n}\n\nkotlin {")
+    if android_end < 0:
+        errors.append("O bloco kotlin deve ficar fora e depois do bloco android.")
     if not errors:
         checks.append("Configuração Android Release/API 36 e versão 1.0.5 conferidas")
 
@@ -192,6 +202,15 @@ if not errors:
     for action in ("actions/checkout@v7", "actions/setup-java@v6", "gradle/actions/setup-gradle@v6", "actions/upload-artifact@v7"):
         if action not in debug_wf or action not in release_wf:
             errors.append(f"Action esperada ausente em um dos workflows: {action}")
+    for wf_name, workflow in (("Debug", debug_wf), ("Release", release_wf)):
+        if "gradle-version: '8.14.4'" not in workflow:
+            errors.append(f"Workflow {wf_name} não está fixado em Gradle 8.14.4.")
+        if "kotlinOptions" in workflow or "gradle-version: '8.9'" in workflow or "gradle-version: '8.13'" in workflow:
+            errors.append(f"Workflow {wf_name} contém configuração antiga de compilação.")
+    if "run: gradle --no-daemon --stacktrace :app:clean :app:assembleDebug" not in debug_wf:
+        errors.append("Workflow Debug não executa a compilação limpa do APK.")
+    if ":app:assembleRelease :app:bundleRelease" not in release_wf:
+        errors.append("Workflow Release não compila APK e AAB.")
     for secret in ("ANDROID_KEYSTORE_BASE64", "ANDROID_KEYSTORE_PASSWORD", "ANDROID_KEY_ALIAS", "ANDROID_KEY_PASSWORD"):
         if secret not in release_wf:
             errors.append(f"Segredo de assinatura ausente no workflow Release: {secret}")
