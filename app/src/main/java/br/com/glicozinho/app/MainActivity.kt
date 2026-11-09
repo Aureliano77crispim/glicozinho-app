@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Base64
 import android.view.WindowInsets
+import android.view.View
 import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
@@ -242,19 +243,31 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Barras do sistema sólidas, com ícones escuros e conteúdo respeitando a área segura.
+        window.statusBarColor = android.graphics.Color.rgb(239, 250, 248)
+        window.navigationBarColor = android.graphics.Color.WHITE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        } else {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(true)
+            window.isStatusBarContrastEnforced = false
+            window.isNavigationBarContrastEnforced = false
+        }
         webView = WebView(this)
+        webView.setBackgroundColor(android.graphics.Color.rgb(243, 250, 249))
         setContentView(webView)
         createNotificationChannel()
         // Revalida e restaura somente metadados mínimos dos lembretes após abrir o app.
         ReminderScheduler.rescheduleAll(this)
 
+        // O Android gerencia as áreas seguras. Padding manual no WebView alterava
+        // o viewport dos elementos position:fixed, inclusive a navegação inferior.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            webView.setOnApplyWindowInsetsListener { view, insets ->
-                val bars = insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
-                val ime = insets.getInsets(WindowInsets.Type.ime())
-                view.setPadding(bars.left, bars.top, bars.right, maxOf(bars.bottom, ime.bottom))
-                insets
-            }
+            webView.setOnApplyWindowInsetsListener { _, insets -> insets }
         }
 
         webView.settings.javaScriptEnabled = true

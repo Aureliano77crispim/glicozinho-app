@@ -123,8 +123,8 @@ if not errors:
         (r"compileSdk\s*=\s*36\b", "compileSdk precisa ser 36"),
         (r"targetSdk\s*=\s*36\b", "targetSdk precisa ser 36"),
         (r"minSdk\s*=\s*26\b", "minSdk precisa ser 26"),
-        (r"versionCode\s*=\s*6\b", "versionCode precisa ser 6"),
-        (r'versionName\s*=\s*"1\.0\.5"', "versionName precisa ser 1.0.5"),
+        (r"versionCode\s*=\s*8\b", "versionCode precisa ser 8"),
+        (r'versionName\s*=\s*"1\.0\.7"', "versionName precisa ser 1.0.7"),
     ]:
         if not re.search(pattern, gradle):
             errors.append(message)
@@ -146,7 +146,7 @@ if not errors:
     if android_end < 0:
         errors.append("O bloco kotlin deve ficar fora e depois do bloco android.")
     if not errors:
-        checks.append("Configuração Android Release/API 36 e versão 1.0.5 conferidas")
+        checks.append("Configuração Android Release/API 36 e versão 1.0.7 conferidas")
 
     main_kt = MAIN_KT.read_text(encoding="utf-8")
     scheduler = SCHEDULER_KT.read_text(encoding="utf-8")

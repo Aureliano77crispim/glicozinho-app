@@ -1,6 +1,6 @@
 # Relatório da revisão técnica — Glicozinho v1.5
 
-**Versão do app:** 1.0.5 (`versionCode` 6)  
+**Versão do app:** 1.0.6 (`versionCode` 7)  
 **Escopo:** revisão de código e estrutura, com inclusão da data do aparelho, calendário mensal e agenda de consultas/exames.  
 **Resultado:** revisão estática e testes locais aprovados; compilação Gradle e ensaios em aparelho ainda pendentes.
 
@@ -30,7 +30,7 @@
 - Avisos flexíveis usam `setAndAllowWhileIdle`; avisos pontuais usam `setExactAndAllowWhileIdle` após conferência de permissão.
 - Reagendamento é acionado em inicialização, mudança de fuso/horário e alteração da autorização de alarmes; o receiver de boot ficou não exportado. A interface compara o horário esperado com os metadados nativos para reagendar se o fuso ou o relógio mudou.
 - O app permanece offline nesta edição: não declara `INTERNET`, contatos, localização ou microfone. Backup Android automático permanece desligado; dados locais usam AES-GCM/Android Keystore; backup exportado tem criptografia por senha.
-- Build version incrementado para `versionCode 6` / `versionName 1.0.5`; fluxos Debug e Release atualizados para build-tools 36.0.0 e artefatos identificados como 1.0.5.
+- Build version incrementado para `versionCode 7` / `versionName 1.0.6`; fluxos Debug e Release atualizados para build-tools 36.0.0 e artefatos identificados como 1.0.6.
 
 ## Testes automatizados executados
 
@@ -51,4 +51,4 @@
 
 ## Decisão
 
-A versão 1.0.5 fica **pronta para seguir ao próximo estágio de compilação e teste controlado**, não declarada como livre de todos os defeitos nem pronta para publicação. A compilação Debug/Release, a instalação e a validação dos lembretes em dispositivos reais são os próximos gates obrigatórios.
+A versão 1.0.6 fica **pronta para seguir ao próximo estágio de compilação e teste controlado**, não declarada como livre de todos os defeitos nem pronta para publicação. A compilação Debug/Release, a instalação e a validação dos lembretes em dispositivos reais são os próximos gates obrigatórios.

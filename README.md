@@ -1,4 +1,4 @@
-# Glicozinho Android — versão técnica 1.0.5 (projeto v1.5.2)
+# Glicozinho Android — versão técnica 1.0.7 (projeto v1.5.2)
 
 **Pacote único para GitHub:** este ZIP já contém os arquivos na raiz do repositório, inclusive `.github/workflows/android-apk.yml`. Leia `LEIA_ANTES_DE_ENVIAR_GITHUB.txt` antes do upload e `AUDITORIA_3_PASSAGENS_v1.5.2.md` para os resultados e limites da revisão.
 
@@ -55,7 +55,7 @@ Consulte a [matriz de compatibilidade do Kotlin Gradle](https://kotlinlang.org/d
 
 ## Compilar APK Debug para teste
 
-O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.0.5`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
+O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.0.7`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
 
 ## Compilar APK/AAB Release assinado
 
@@ -67,7 +67,7 @@ O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project
    - `ANDROID_KEY_ALIAS`
    - `ANDROID_KEY_PASSWORD`
 4. Abra **Actions → Glicozinho - Release assinado → Run workflow**.
-5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.0.5`.
+5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.0.7`.
 
 A assinatura deste projeto é uma chave privada de upload. Guarde uma cópia segura. Perder a chave pode impedir atualizações diretas com a mesma identidade. Uma assinatura própria não garante remoção dos avisos do Play Protect nem aprovação da Play Store.
 

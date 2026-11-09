@@ -62,4 +62,4 @@ Verificações executadas:
 
 ## Critério para declarar o build aprovado
 
-Só declarar o APK de teste como gerado quando o GitHub Actions executar o workflow novo (nome `Glicozinho - Verificação e APK de teste`), mostrar o job `build-debug` verde e publicar o artefato `Glicozinho-APK-Debug-v1.0.5`. A existência de um artefato antigo com o nome `Glicozinho-APK` não prova que ele veio deste pacote.
+Só declarar o APK de teste como gerado quando o GitHub Actions executar o workflow novo (nome `Glicozinho - Verificação e APK de teste`), mostrar o job `build-debug` verde e publicar o artefato `Glicozinho-APK-Debug-v1.0.6`. A existência de um artefato antigo com o nome `Glicozinho-APK` não prova que ele veio deste pacote.
