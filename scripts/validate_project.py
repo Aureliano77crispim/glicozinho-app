@@ -93,7 +93,7 @@ if not errors:
     if corinthians_test.returncode:
         errors.append("Testes da área Corinthians falharam: " + (corinthians_test.stderr or corinthians_test.stdout).strip())
     else:
-        checks.append("Área Corinthians: escudo local, cinco atalhos musicais e abertura externa validados")
+        checks.append("Área Corinthians: escudo local, player local com controles de faixa validado")
 
     # Parse every XML file in app resources and manifest
     for path in (ROOT / "app/src/main").rglob("*.xml"):
@@ -138,8 +138,8 @@ if not errors:
         (r"compileSdk\s*=\s*36\b", "compileSdk precisa ser 36"),
         (r"targetSdk\s*=\s*36\b", "targetSdk precisa ser 36"),
         (r"minSdk\s*=\s*26\b", "minSdk precisa ser 26"),
-        (r"versionCode\s*=\s*13\b", "versionCode precisa ser 13"),
-        (r'versionName\s*=\s*"1\.1\.2"', "versionName precisa ser 1.1.2"),
+        (r"versionCode\s*=\s*14\b", "versionCode precisa ser 14"),
+        (r'versionName\s*=\s*"1\.1\.3"', "versionName precisa ser 1.1.3"),
     ]:
         if not re.search(pattern, gradle):
             errors.append(message)
@@ -161,19 +161,21 @@ if not errors:
     if android_end < 0:
         errors.append("O bloco kotlin deve ficar fora e depois do bloco android.")
     if not errors:
-        checks.append("Configuração Android Release/API 36 e versão 1.1.2 conferidas")
+        checks.append("Configuração Android Release/API 36 e versão 1.1.3 conferidas")
 
     main_kt = MAIN_KT.read_text(encoding="utf-8")
     scheduler = SCHEDULER_KT.read_text(encoding="utf-8")
     receiver = RECEIVER_KT.read_text(encoding="utf-8")
     if "blockNetworkLoads = true" not in main_kt:
         errors.append("WebView precisa bloquear carregamentos de rede nesta edição local/offline.")
-    if "corinthiansMusicModal" not in html or "corinthians-crest.svg" not in html:
-        errors.append("Atalho do Corinthians e escudo local não encontrados na interface.")
-    if "openCorinthiansSong" not in main_kt or all(song not in main_kt for song in ["hino", "bando", "nunca", "louco", "minhavida"]):
-        errors.append("Abertura das cinco buscas musicais do Corinthians não está integrada à ponte Android.")
+    if "corinthiansPlayer" not in html or "corinthians-aguia.png" not in html:
+        errors.append("Player Corinthians e arte da águia enviada pelo usuário não encontrados na interface.")
+    if "hasBundledTrack" not in main_kt or "mediaPlaybackRequiresUserGesture = false" not in main_kt:
+        errors.append("Verificação de MP3 local e configuração de reprodução automática não encontradas.")
+    if "youtube.com/results" in html or "corinthiansMusicModal" in html:
+        errors.append("Player deve ser local, sem lista de músicas e sem abrir YouTube.")
     if "android.permission.INTERNET" in permissions:
-        errors.append("O aplicativo deve continuar sem permissão de internet; músicas abrem no navegador externo.")
+        errors.append("O aplicativo deve continuar sem permissão de internet; as faixas devem ser empacotadas localmente.")
     for needle, message in [
         ("AndroidKeyStore", "Armazenamento precisa usar Android Keystore"),
         ("AES/GCM/NoPadding", "Armazenamento precisa usar AES-GCM"),

@@ -71,26 +71,16 @@ class MainActivity : Activity() {
 
     inner class GlicozinhoBridge {
         @JavascriptInterface
-        fun openCorinthiansSong(songId: String): Boolean {
-            val query = when (songId) {
-                "hino" -> "Hino oficial Sport Club Corinthians Paulista"
-                "bando" -> "Aqui tem um bando de loucos canto torcida Corinthians"
-                "nunca" -> "Eu nunca vou te abandonar canto torcida Corinthians"
-                "louco" -> "Louco por ti Corinthians canto torcida"
-                "minhavida" -> "Corinthians minha vida minha história canto torcida"
-                else -> return false
-            }
-            runOnUiThread {
-                try {
-                    val uri = Uri.parse("https://www.youtube.com/results?search_query=${Uri.encode(query)}")
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    startActivity(Intent.createChooser(intent, "Ouvir canto do Corinthians"))
-                } catch (_: Exception) {
-                    Toast.makeText(this@MainActivity, "Não foi possível abrir o YouTube neste aparelho.", Toast.LENGTH_LONG).show()
-                }
-            }
-            return true
+        fun hasBundledTrack(path: String): Boolean {
+            val allowed = setOf(
+                "music/hino-oficial.mp3", "music/bando-de-loucos.mp3",
+                "music/nunca-vou-te-abandonar.mp3", "music/louco-por-ti.mp3",
+                "music/minha-vida-minha-historia.mp3"
+            )
+            if (path !in allowed) return false
+            return try { assets.open(path).use { true } } catch (_: Exception) { false }
         }
+
 
         @JavascriptInterface
         fun loadData(): String = try {
@@ -318,6 +308,7 @@ class MainActivity : Activity() {
         }
 
         webView.settings.javaScriptEnabled = true
+        webView.settings.mediaPlaybackRequiresUserGesture = false
         webView.settings.domStorageEnabled = true
         webView.settings.allowFileAccess = true
         webView.settings.allowContentAccess = true

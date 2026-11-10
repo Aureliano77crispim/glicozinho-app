@@ -1,0 +1,13 @@
+Glicozinho 1.1.3 — registro de testes
+
+PASSOU: scripts/test_web_logic.cjs
+PASSOU: scripts/test_corinthians_feature.cjs
+PASSOU: scripts/validate_project.py
+PASSOU: node --check do JavaScript extraído do index.html
+PASSOU: player sem playlist/modal e sem URLs do YouTube
+PASSOU: escudo PNG local da águia fornecida pelo usuário
+PASSOU: controles Play/Pause, anterior/próxima, seek, volume, aleatório e repetir presentes
+PASSOU: app permanece sem permissão INTERNET
+PENDENTE: MP3s autorizados ainda não foram fornecidos; por isso não há áudio embutido
+PENDENTE: Gradle assembleDebug/assembleRelease no GitHub Actions
+PENDENTE: instalação e teste físico no Samsung, incluindo autoplay e reprodução em segundo plano

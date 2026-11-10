@@ -1,4 +1,4 @@
-# Glicozinho Android — versão de teste 1.1.2 (piloto pessoal de 30 dias)
+# Glicozinho Android — versão de teste 1.1.3 (piloto pessoal de 30 dias)
 
 **Pacote único para GitHub:** este ZIP já contém os arquivos na raiz do repositório, inclusive `.github/workflows/android-apk.yml`. Leia `LEIA_ANTES_DE_ENVIAR_GITHUB.txt` antes do upload e `REVISAO_FINAL_1.1.1_REAUDITORIA.md` para os resultados e limites da revisão.
 
@@ -18,7 +18,7 @@
 - Lembretes nativos também são reconstruídos após atualização do aplicativo.
 
 
-## Área Corinthians 1910 (novidade 1.1.2)
+## Área Corinthians 1910 (novidade 1.1.3)
 
 - Atalho com escudo ilustrativo preto, branco e vermelho, com a inscrição CORINTHIANS 1910, imediatamente ao lado do botão Backup.
 - O atalho abre uma lista de cinco pesquisas de gravações no YouTube: hino oficial, Aqui tem um bando de loucos, Eu nunca vou te abandonar, Louco por ti Corinthians e Corinthians minha vida/minha história.
@@ -76,7 +76,7 @@ Consulte a [matriz de compatibilidade do Kotlin Gradle](https://kotlinlang.org/d
 
 ## Compilar APK Debug para teste
 
-O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.1.2`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
+O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.1.3`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
 
 ## Compilar APK/AAB Release assinado
 
@@ -88,7 +88,7 @@ O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project
    - `ANDROID_KEY_ALIAS`
    - `ANDROID_KEY_PASSWORD`
 4. Abra **Actions → Glicozinho - Release assinado → Run workflow**.
-5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.1.2`.
+5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.1.3`.
 
 A assinatura deste projeto é uma chave privada de upload. Guarde uma cópia segura. Perder a chave pode impedir atualizações diretas com a mesma identidade. Uma assinatura própria não garante remoção dos avisos do Play Protect nem aprovação da Play Store.
 
@@ -115,3 +115,13 @@ Faça um backup antes de instalar esta versão e ao final do período. Não comp
 ## Antes de uso real ou comercial
 
 Não use esta versão beta como prontuário clínico nem introduza dados reais de saúde nos primeiros testes. Antes de qualquer lançamento, faça testes em aparelhos e versões Android diferentes, auditoria independente de segurança, testes de acessibilidade com pessoas idosas, revisão clínica por profissionais habilitados, documentação LGPD, termos e política de privacidade e avaliação regulatória especializada sobre eventual enquadramento perante a Anvisa. A validação estática não substitui essas etapas.
+
+
+## Versão 1.1.3 — Player Corinthians 1910
+
+- Player compacto na tela inicial, sem lista de faixas.
+- Botões anterior/próxima, Play/Pause, seek, volume, aleatório e repetir.
+- Arte da águia/escudo enviada pelo usuário com fundo transparente.
+- Cinco posições de áudio local, sem abrir YouTube.
+- Para ativar áudio, adicionar MP3s autorizados conforme `app/src/main/assets/music/LEIA-ME.txt`.
+- O hino tenta iniciar automaticamente quando o arquivo está incluído no APK; se o Android bloquear, use Play.

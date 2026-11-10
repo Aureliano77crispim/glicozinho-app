@@ -1,0 +1,14 @@
+PLAYER CORINTHIANS 1910 — ARQUIVOS DE ÁUDIO
+
+O projeto não inclui gravações comerciais ou cantos de torcida protegidos por direitos autorais.
+Para habilitar a reprodução local, coloque gravações que você tenha direito de usar com estes nomes exatos:
+
+1. hino-oficial.mp3
+2. bando-de-loucos.mp3
+3. nunca-vou-te-abandonar.mp3
+4. louco-por-ti.mp3
+5. minha-vida-minha-historia.mp3
+
+Salve os cinco arquivos nesta pasta (app/src/main/assets/music/). O player não abre YouTube.
+Quando o hino estiver incluído, o app tenta iniciá-lo ao abrir. Se o Android bloquear a reprodução automática, toque em Play.
+Sem os MP3s, os controles mostram aviso e não simulam uma reprodução.
