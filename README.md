@@ -1,10 +1,14 @@
-# Glicozinho Android — versão técnica 1.0.9 (projeto v1.5.2)
+# Glicozinho Android — versão de teste 1.1.2 (piloto pessoal de 30 dias)
 
-**Pacote único para GitHub:** este ZIP já contém os arquivos na raiz do repositório, inclusive `.github/workflows/android-apk.yml`. Leia `LEIA_ANTES_DE_ENVIAR_GITHUB.txt` antes do upload e `REVISAO_3_PASSAGENS_v1.0.9.md` para os resultados e limites da revisão.
+**Pacote único para GitHub:** este ZIP já contém os arquivos na raiz do repositório, inclusive `.github/workflows/android-apk.yml`. Leia `LEIA_ANTES_DE_ENVIAR_GITHUB.txt` antes do upload e `REVISAO_FINAL_1.1.1_REAUDITORIA.md` para os resultados e limites da revisão.
 
 **Glicozinho — Seu companheiro de saúde.** Aplicativo Android beta de organização pessoal, com interface HTML local em WebView e camada nativa Kotlin. Não é dispositivo médico, prontuário clínico validado nem produto liberado para comercialização.
 
 ## Novidades e proteções desta versão
+
+- Foto de perfil escolhida pela galeria, reduzida para imagem JPEG de até 512 px, armazenada localmente no conjunto de dados criptografados e incluída no backup protegido. Pode ser removida a qualquer momento.
+- Barra inferior ampliada e reposicionada acima da barra de navegação do Android, com altura real do inset do sistema aplicada ao WebView para evitar sobreposição com os ícones/gestos do aparelho.
+- Versão identificada como candidata de teste pessoal por 30 dias; não é lançamento comercial nem certificação clínica.
 
 - Após restaurar um backup, a fila de alarmes anterior é limpa e os lembretes de rotina e compromissos futuros daquele backup são reconstruídos no Android quando as permissões estão ativas.
 - O número CNS volta a ficar oculto ao sair da tela inicial, ao ocultar o aplicativo ou após 15 segundos.
@@ -12,6 +16,14 @@
 - Lembretes avulsos vencidos podem ser removidos do histórico.
 - Se a permissão de notificações for revogada, a tela sinaliza que é necessário autorizá-la novamente, suspende alarmes pendentes e os recompõe quando a permissão volta.
 - Lembretes nativos também são reconstruídos após atualização do aplicativo.
+
+
+## Área Corinthians 1910 (novidade 1.1.2)
+
+- Atalho com escudo ilustrativo preto, branco e vermelho, com a inscrição CORINTHIANS 1910, imediatamente ao lado do botão Backup.
+- O atalho abre uma lista de cinco pesquisas de gravações no YouTube: hino oficial, Aqui tem um bando de loucos, Eu nunca vou te abandonar, Louco por ti Corinthians e Corinthians minha vida/minha história.
+- As músicas são abertas fora do aplicativo pelo navegador/YouTube. O APK não contém gravações nem letras protegidas e continua sem permissão de internet.
+- O escudo SVG é uma ilustração de homenagem não oficial, não é o arquivo oficial do clube nem indica endosso do Corinthians.
 
 ## Calendário e agenda
 
@@ -64,7 +76,7 @@ Consulte a [matriz de compatibilidade do Kotlin Gradle](https://kotlinlang.org/d
 
 ## Compilar APK Debug para teste
 
-O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.0.9`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
+O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project.py`, compila `:app:assembleDebug`, verifica a assinatura do APK e disponibiliza `Glicozinho-APK-Debug-v1.1.2`. O pacote Debug usa o sufixo `.debug` e não é destinado à distribuição comercial.
 
 ## Compilar APK/AAB Release assinado
 
@@ -76,15 +88,29 @@ O workflow `.github/workflows/android-apk.yml` executa `scripts/validate_project
    - `ANDROID_KEY_ALIAS`
    - `ANDROID_KEY_PASSWORD`
 4. Abra **Actions → Glicozinho - Release assinado → Run workflow**.
-5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.0.9`.
+5. O workflow valida os segredos, executa a validação estática, tenta compilar `app-release.apk` e `app-release.aab` e verifica as assinaturas antes de disponibilizar `Glicozinho-Release-Assinado-v1.1.2`.
 
 A assinatura deste projeto é uma chave privada de upload. Guarde uma cópia segura. Perder a chave pode impedir atualizações diretas com a mesma identidade. Uma assinatura própria não garante remoção dos avisos do Play Protect nem aprovação da Play Store.
 
 ## Revisão e testes desta versão
 
-O relatório `REVISAO_3_PASSAGENS_v1.0.9.md` descreve as três passagens de revisão, as 53 verificações de interface, os testes de lógica, as correções e os limites ainda pendentes. Os workflows executam a validação antes de compilar.
+O relatório `REVISAO_FINAL_1.1.1_REAUDITORIA.md` descreve a revisão desta edição, os testes executados, as correções e os limites ainda pendentes. Os workflows executam a validação antes de compilar.
 
-**Limite desta entrega:** foram executados 50 testes automatizados de interface móvel em Chromium (com bridge Android simulado), testes de lógica JavaScript, verificação de sintaxe, análise estrutural de HTML, parsing dos XMLs e validação de configuração do projeto. Este ambiente não tem Gradle/Android SDK instalados; portanto, não foi possível executar uma compilação Gradle real nem testar a instalação, a permissão de notificações, o comportamento com tela bloqueada ou a pontualidade em aparelhos físicos. A primeira compilação real deve ser confirmada no GitHub Actions. Os alarmes precisam ser testados em aparelhos e fabricantes diferentes.
+**Limite desta entrega:** foram executados testes de lógica JavaScript, validação estática do projeto e verificações automatizadas de interface disponíveis no pacote. Este ambiente não tem Gradle/Android SDK instalados; portanto, a compilação Android real e os testes no aparelho devem ser confirmados pelo GitHub Actions e pelo Samsung. A primeira compilação real deve ser confirmada no GitHub Actions. Os alarmes precisam ser testados em aparelhos e fabricantes diferentes.
+
+## Plano de teste pessoal por 30 dias
+
+Durante 30 dias, use o Glicozinho como organizador auxiliar, sem substituir receita, orientação profissional, glicosímetro, plano de tratamento ou alarmes confiáveis do aparelho. Mantenha outro meio para avisos clinicamente importantes, pois Android, economia de bateria e fabricante podem atrasar notificações.
+
+- Dia 1: instale a versão de teste e confirme que a versão anterior foi atualizada sem apagar dados.
+- Dias 1–3: confira foto de perfil, navegação inferior, cadastro/edição/exclusão e leitura de tela.
+- Dias 4–10: registre glicemias e aplicações que realmente ocorreram; confira datas, horários e histórico.
+- Dias 11–17: teste medicamentos, marcar como tomado/desfazer e lembretes com o app fechado e tela bloqueada.
+- Dias 18–23: teste agenda, calendário, avisos e reinicialização do aparelho. Não confie exclusivamente em alarmes do app.
+- Dias 24–27: exporte um backup protegido, confirme que o arquivo existe e guarde a senha separadamente. Não faça restauração sobre os dados principais sem cópia extra.
+- Dias 28–30: confira consistência dos registros, consumo de bateria, travamentos, acessibilidade e envie os problemas encontrados para correção.
+
+Faça um backup antes de instalar esta versão e ao final do período. Não compartilhe o APK nem dados de saúde com terceiros durante o piloto.
 
 ## Antes de uso real ou comercial
 

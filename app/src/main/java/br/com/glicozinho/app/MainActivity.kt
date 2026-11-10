@@ -48,6 +48,15 @@ class MainActivity : Activity() {
     private var fileChooserCallback: ValueCallback<Array<Uri>>? = null
     private var pendingBackupBytes: ByteArray? = null
     private var webReady = false
+    private var navigationBarInsetDp = 0f
+
+    private fun applyWebSafeArea() {
+        if (!::webView.isInitialized) return
+        val inset = navigationBarInsetDp.toString()
+        webView.post {
+            webView.evaluateJavascript("document.documentElement.style.setProperty('--android-nav-inset', '${inset}px')", null)
+        }
+    }
 
     companion object {
         private const val FILE_PICKER_REQUEST = 4101
@@ -61,6 +70,28 @@ class MainActivity : Activity() {
     }
 
     inner class GlicozinhoBridge {
+        @JavascriptInterface
+        fun openCorinthiansSong(songId: String): Boolean {
+            val query = when (songId) {
+                "hino" -> "Hino oficial Sport Club Corinthians Paulista"
+                "bando" -> "Aqui tem um bando de loucos canto torcida Corinthians"
+                "nunca" -> "Eu nunca vou te abandonar canto torcida Corinthians"
+                "louco" -> "Louco por ti Corinthians canto torcida"
+                "minhavida" -> "Corinthians minha vida minha história canto torcida"
+                else -> return false
+            }
+            runOnUiThread {
+                try {
+                    val uri = Uri.parse("https://www.youtube.com/results?search_query=${Uri.encode(query)}")
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivity(Intent.createChooser(intent, "Ouvir canto do Corinthians"))
+                } catch (_: Exception) {
+                    Toast.makeText(this@MainActivity, "Não foi possível abrir o YouTube neste aparelho.", Toast.LENGTH_LONG).show()
+                }
+            }
+            return true
+        }
+
         @JavascriptInterface
         fun loadData(): String = try {
             val file = File(filesDir, "glicozinho-data.enc")
@@ -272,8 +303,18 @@ class MainActivity : Activity() {
 
         // O Android gerencia as áreas seguras. Padding manual no WebView alterava
         // o viewport dos elementos position:fixed, inclusive a navegação inferior.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            webView.setOnApplyWindowInsetsListener { _, insets -> insets }
+        // Android 15+ força edge-to-edge para apps com targetSdk recente.
+        // Passamos a altura real da barra de navegação ao CSS para manter a barra
+        // do aplicativo acima dos botões/gestos do sistema, sem sobreposição.
+        webView.setOnApplyWindowInsetsListener { view, insets ->
+            val bottomPx = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                insets.getInsets(WindowInsets.Type.navigationBars()).bottom
+            } else {
+                insets.systemWindowInsetBottom
+            }
+            navigationBarInsetDp = bottomPx / resources.displayMetrics.density
+            view.post { applyWebSafeArea() }
+            insets
         }
 
         webView.settings.javaScriptEnabled = true
@@ -300,6 +341,7 @@ class MainActivity : Activity() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 webReady = true
+                applyWebSafeArea()
                 view?.evaluateJavascript("window.onGlicozinhoNativeResume && window.onGlicozinhoNativeResume();", null)
             }
         }
@@ -312,9 +354,21 @@ class MainActivity : Activity() {
             ): Boolean {
                 this@MainActivity.fileChooserCallback?.onReceiveValue(null)
                 this@MainActivity.fileChooserCallback = filePathCallback
+                val accepted = fileChooserParams?.acceptTypes
+                    ?.flatMap { it.split(",") }
+                    ?.map { it.trim() }
+                    ?.filter { it.contains("/") }
+                    ?.distinct()
+                    .orEmpty()
+                val chooserMime = when {
+                    accepted.isEmpty() -> "*/*"
+                    accepted.size == 1 -> accepted.first()
+                    else -> "*/*"
+                }
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                     addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "*/*"
+                    type = chooserMime
+                    if (accepted.size > 1) putExtra(Intent.EXTRA_MIME_TYPES, accepted.toTypedArray())
                 }
                 try {
                     startActivityForResult(intent, FILE_PICKER_REQUEST)

@@ -1,4 +1,4 @@
-GLICOZINHO — PACOTE PARA GITHUB — v1.0.9
+GLICOZINHO — PACOTE PARA GITHUB — v1.1.1
 
 Este ZIP abre diretamente na raiz do repositório. Não há uma pasta externa envolvendo o projeto.
 
@@ -14,14 +14,14 @@ CONTEÚDO PRINCIPAL
   gradle.properties
   scripts/validate_project.py
   scripts/test_web_logic.cjs
-  REVISAO_3_PASSAGENS_v1.0.9.md
+  REVISAO_FINAL_1.1.1_REAUDITORIA.md
 
 COMO ENVIAR
 1. Extraia o ZIP.
 2. No GitHub, abra o repositório e envie TODO o conteúdo extraído para a branch main, mantendo a estrutura de pastas.
 3. Na prévia, confirme especialmente que aparecem `.github/workflows/android-apk.yml`, `app/build.gradle.kts` e `app/src/main/java/br/com/glicozinho/app/`.
 4. Confirme o envio. A alteração na branch main inicia o workflow de APK Debug.
-5. Abra Actions e acompanhe a execução. Só depois de ficar verde, baixe o artefato `Glicozinho-APK-Debug-v1.0.9`.
+5. Abra Actions e acompanhe a execução. Só depois de ficar verde, baixe o artefato `Glicozinho-APK-Debug-v1.1.1`.
 
 NÃO ENVIE SEGREDOS
 - Não envie arquivos .p12, .jks, .keystore, senhas ou Base64 da chave de assinatura ao repositório.
@@ -29,6 +29,6 @@ NÃO ENVIE SEGREDOS
 
 IMPORTANTE
 - Este pacote contém o código-fonte e os testes, não contém APK compilado.
-- A revisão v1.0.9 passou em validação estática, testes de lógica e 50 verificações automatizadas de interface móvel com bridge nativa simulada.
-- A compilação real e os testes no Samsung/Android ainda precisam ser concluídos. Consulte `REVISAO_3_PASSAGENS_v1.0.9.md`.
+- A revisão v1.1.1 passou em validação estática e testes de lógica, incluindo validação estrita da foto de perfil, limite de resolução e ajuste da barra inferior.
+- A compilação real e os testes no Samsung/Android ainda precisam ser concluídos. Consulte `REVISAO_FINAL_1.1.1_REAUDITORIA.md`.
 - Não desinstale a versão atual nem apague dados sem exportar e verificar backup.

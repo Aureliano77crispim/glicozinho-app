@@ -1,0 +1,10 @@
+Glicozinho 1.1.2 — lista de verificação
+[ ] Atalho Corinthians aparece imediatamente ao lado de Backup.
+[ ] Escudo e texto CORINTHIANS 1910 aparecem corretamente em tela pequena.
+[ ] Toque no escudo abre o painel de cinco opções.
+[ ] Hino oficial abre busca do YouTube.
+[ ] Quatro cantos de torcida abrem buscas corretas.
+[ ] Botão voltar retorna ao Glicozinho.
+[ ] Backup e demais abas continuam funcionando.
+[ ] Não há permissão INTERNET no manifesto.
+[ ] APK compila e instala no Samsung.

@@ -32,10 +32,16 @@ for path in required:
 if not errors:
     # JavaScript syntax
     html = HTML.read_text(encoding="utf-8")
-    if "Versão beta 1.0.9" not in html:
-        errors.append("Rodapé HTML deve exibir a mesma versão beta 1.0.9 do aplicativo.")
+    if "Versão de teste 1.1.2" not in html:
+        errors.append("Rodapé HTML deve exibir a mesma versão de teste 1.1.2 do aplicativo.")
     if "Você tem um compromisso futuro na sua agenda." not in html or "speechSynthesis.speak(u)" not in html:
         errors.append("Botão Ouvir deve oferecer leitura em voz alta da saudação e do próximo compromisso.")
+    if 'id="profilePhotoInput"' not in html or "renderProfilePhoto()" not in html or "removeProfilePhoto()" not in html:
+        errors.append("Foto de perfil deve permitir selecionar, visualizar e remover imagem.")
+    if "--android-nav-inset" not in html or "bottom:var(--android-nav-inset)" not in html:
+        errors.append("Barra inferior deve respeitar o inset da navegação do Android.")
+    if "navigationBars()" not in MAIN_KT.read_text(encoding="utf-8") or "applyWebSafeArea()" not in MAIN_KT.read_text(encoding="utf-8"):
+        errors.append("MainActivity deve informar ao WebView a altura da barra de navegação do Android.")
     scripts = re.findall(r"<script[^>]*>(.*?)</script>", html, flags=re.I | re.S)
     if not scripts:
         errors.append("Nenhum bloco JavaScript foi encontrado no HTML.")
@@ -83,6 +89,11 @@ if not errors:
         errors.append("Testes de lógica do aplicativo falharam: " + (logic_test.stderr or logic_test.stdout).strip())
     else:
         checks.append("Testes de lógica: backups válidos aceitos e dados inválidos rejeitados")
+    corinthians_test = subprocess.run(["node", "scripts/test_corinthians_feature.cjs"], cwd=ROOT, capture_output=True, text=True)
+    if corinthians_test.returncode:
+        errors.append("Testes da área Corinthians falharam: " + (corinthians_test.stderr or corinthians_test.stdout).strip())
+    else:
+        checks.append("Área Corinthians: escudo local, cinco atalhos musicais e abertura externa validados")
 
     # Parse every XML file in app resources and manifest
     for path in (ROOT / "app/src/main").rglob("*.xml"):
@@ -127,8 +138,8 @@ if not errors:
         (r"compileSdk\s*=\s*36\b", "compileSdk precisa ser 36"),
         (r"targetSdk\s*=\s*36\b", "targetSdk precisa ser 36"),
         (r"minSdk\s*=\s*26\b", "minSdk precisa ser 26"),
-        (r"versionCode\s*=\s*10\b", "versionCode precisa ser 10"),
-        (r'versionName\s*=\s*"1\.0\.9"', "versionName precisa ser 1.0.9"),
+        (r"versionCode\s*=\s*13\b", "versionCode precisa ser 13"),
+        (r'versionName\s*=\s*"1\.1\.2"', "versionName precisa ser 1.1.2"),
     ]:
         if not re.search(pattern, gradle):
             errors.append(message)
@@ -150,13 +161,19 @@ if not errors:
     if android_end < 0:
         errors.append("O bloco kotlin deve ficar fora e depois do bloco android.")
     if not errors:
-        checks.append("Configuração Android Release/API 36 e versão 1.0.9 conferidas")
+        checks.append("Configuração Android Release/API 36 e versão 1.1.2 conferidas")
 
     main_kt = MAIN_KT.read_text(encoding="utf-8")
     scheduler = SCHEDULER_KT.read_text(encoding="utf-8")
     receiver = RECEIVER_KT.read_text(encoding="utf-8")
     if "blockNetworkLoads = true" not in main_kt:
         errors.append("WebView precisa bloquear carregamentos de rede nesta edição local/offline.")
+    if "corinthiansMusicModal" not in html or "corinthians-crest.svg" not in html:
+        errors.append("Atalho do Corinthians e escudo local não encontrados na interface.")
+    if "openCorinthiansSong" not in main_kt or all(song not in main_kt for song in ["hino", "bando", "nunca", "louco", "minhavida"]):
+        errors.append("Abertura das cinco buscas musicais do Corinthians não está integrada à ponte Android.")
+    if "android.permission.INTERNET" in permissions:
+        errors.append("O aplicativo deve continuar sem permissão de internet; músicas abrem no navegador externo.")
     for needle, message in [
         ("AndroidKeyStore", "Armazenamento precisa usar Android Keystore"),
         ("AES/GCM/NoPadding", "Armazenamento precisa usar AES-GCM"),

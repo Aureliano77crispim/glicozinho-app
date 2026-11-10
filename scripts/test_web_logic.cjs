@@ -16,7 +16,7 @@ const good = {
   medEvents: [{ id: 'e1', medId: 'm1', medName: 'Medicamento de exemplo', when: now }],
   routine: [{ id: 'r1', type: 'reminder', title: 'Lembrete de exemplo', repeat: 'Todos os dias', triggerAt: now }],
   appointments: [{ id: 'a1', type: 'consultation', title: 'Consulta de exemplo', when: new Date(Date.now() + 86400000).toISOString().slice(0,16), professional: 'Profissional', location: 'Clínica', notes: '', reminderMinutes: 30, reminderAt: new Date(Date.now() + 84600000).toISOString(), precision: 'approximate', done: false }],
-  profile: { displayName: 'Teste', mode: 'easy', contrast: 'high' }
+  profile: { displayName: 'Teste', mode: 'easy', contrast: 'high', photo: 'data:image/jpeg;base64,QUJD' }
 };
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 
@@ -51,10 +51,17 @@ assert(cells.some(day => day.key === '2026-11-07' && day.inMonth), 'Calendar did
 assert(calendarApi.appointmentDateKey('2026-11-07T10:45') === '2026-11-07', 'Appointment day key mismatch');
 const normalizeMatch = source.match(/function normalizeData\(x\)\{[\s\S]*?(?=\nfunction load\()/);
 if (!normalizeMatch) throw new Error('normalizeData function not found');
-const normalize = new Function(`${parseLocalMatch[0]}; function defaults(){return {glucose:[],insulin:[],meds:[],medEvents:[],routine:[],appointments:[],profile:{displayName:'',mode:'standard',contrast:'normal'}}}; ${normalizeMatch[0]}; return normalizeData;`)();
-const normalized = normalize({ appointments: good.appointments.concat([{...good.appointments[0]}]), profile:{displayName:'Teste'} });
+const normalize = new Function(`${parseLocalMatch[0]}; function defaults(){return {glucose:[],insulin:[],meds:[],medEvents:[],routine:[],appointments:[],profile:{displayName:'',mode:'standard',contrast:'normal',photo:''}}}; ${normalizeMatch[0]}; return normalizeData;`)();
+const normalized = normalize({ appointments: good.appointments.concat([{...good.appointments[0]}]), profile:{...good.profile} });
 assert(normalized.appointments.length === 1, 'Normalizer failed to remove duplicate appointment IDs');
 assert(normalized.profile.displayName === 'Teste', 'Normalizer lost profile');
+assert(normalized.profile.photo === 'data:image/jpeg;base64,QUJD', 'Normalizer lost a valid profile photo');
+const normalizedMalformedPhoto = normalize({ profile:{photo:'data:image/jpeg;base64,NOT*BASE64!'} });
+assert(normalizedMalformedPhoto.profile.photo === '', 'Normalizer accepted malformed base64 profile photo');
+const normalizedBadPhoto = normalize({ profile:{photo:'data:text/html;base64,PHNjcmlwdD4='} });
+assert(normalizedBadPhoto.profile.photo === '', 'Normalizer accepted a non-image profile payload');
+const normalizedOversizedPhoto = normalize({ profile:{photo:'data:image/jpeg;base64,'+'A'.repeat(450001)} });
+assert(normalizedOversizedPhoto.profile.photo === '', 'Normalizer accepted an oversized profile photo');
 const normalizedBad = normalize({ appointments:[{...good.appointments[0], when:'2026-02-31T10:00'}] });
 assert(normalizedBad.appointments.length === 0, 'Normalizer retained impossible appointment date');
 
@@ -114,4 +121,4 @@ assert(tx.getRenderCount() === 1, 'Failed persistence did not refresh after roll
 tx = makeTransaction({ items: ['before'] }, true);
 assert(tx.commitData(() => tx.getDb().items.push('saved')) === true, 'Successful persistence reported as failed');
 assert(JSON.stringify(tx.getDb()) === JSON.stringify({ items: ['before', 'saved'] }), 'Successful persistence did not keep mutation');
-console.log('WEB LOGIC TESTS PASSED: backup validation, insulin state, dose limits, future records, profile, recurrence, appointment schema, strict dates, duplicate-ID rejection, safe data normalization, timezone-aware reminder calculation, local date parsing, six-week calendar grid, daily reminder restore time, collection limits and rollback-on-save-failure.');
+console.log('WEB LOGIC TESTS PASSED: backup validation, insulin state, dose limits, future records, profile, recurrence, appointment schema, strict dates, duplicate-ID rejection, safe data normalization, timezone-aware reminder calculation, local date parsing, six-week calendar grid, daily reminder restore time, collection limits, profile-photo validation and rollback-on-save-failure.');

@@ -1,0 +1,23 @@
+GLICOZINHO v1.1.1 — RESULTADOS DA REAUDITORIA
+
+APROVADO NO AMBIENTE DE DESENVOLVIMENTO
+- scripts/validate_project.py
+- scripts/test_web_logic.cjs
+- Sintaxe JavaScript inline
+- Estrutura HTML, IDs únicos e referências internas
+- AndroidManifest.xml e recursos XML
+- Backup: foto válida preservada; MIME não permitido, Base64 malformado e foto acima do limite rejeitados
+- Limite de dimensão da foto: lado máximo de 12.000 px e área máxima de 40 MP antes do canvas
+- Barra inferior: CSS mantém altura ampliada e recebe inset inferior do Android via WindowInsets
+- versionCode 12 / versionName 1.1.1
+
+PENDENTE NO APARELHO / GITHUB ACTIONS
+- Compilação Gradle no GitHub Actions
+- Download e instalação do APK 1.1.1
+- Abrir seletor e escolher foto real da Galeria/Arquivos; trocar e remover foto
+- Conferir barra inferior em navegação por gestos e três botões no Samsung
+- Testar com escala de fonte/tela ampliada
+- Testar alarmes reais com tela bloqueada e economia de bateria
+- Completar o piloto de 30 dias
+
+Não considerar o APK concluído até o workflow ficar verde e a instalação ser confirmada no aparelho.

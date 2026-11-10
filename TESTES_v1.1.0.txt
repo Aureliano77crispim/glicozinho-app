@@ -1,0 +1,22 @@
+GLICOZINHO v1.1.0 — RESULTADOS DE VALIDAÇÃO
+
+APROVADO
+- Validação estática do projeto (scripts/validate_project.py)
+- Testes de lógica JavaScript (scripts/test_web_logic.cjs)
+- Normalização de foto de perfil JPEG/PNG/WebP
+- Rejeição de foto com tipo de conteúdo não permitido
+- Rejeição de foto acima do limite de 450.000 caracteres
+- Sintaxe do JavaScript inline (node --check)
+- Estrutura HTML, IDs únicos e referências internas
+- AndroidManifest.xml e recursos XML
+- Versionamento: versionCode 11 / versionName 1.1.0
+
+PENDENTE NO AMBIENTE REAL
+- Compilação Gradle/Android SDK via GitHub Actions
+- Instalação e atualização no Samsung
+- Seletor da Galeria/Arquivos para foto
+- Conferência da barra inferior em gestos e três botões
+- Testes reais de notificações com tela bloqueada e economia de bateria
+- Piloto de uso diário de 30 dias
+
+Não declarar o APK como concluído até o workflow do GitHub gerar o artefato e a instalação no aparelho ser confirmada.
